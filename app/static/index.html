@@ -56,10 +56,17 @@
     .nav-btn.active { color: var(--text); font-weight: 700; }
     .nav-btn.active::after { content: ''; position: absolute; bottom: -1px; left: 0; right: 0; height: 2px; background: var(--lime-hover); border-radius: 2px; }
 
-    /* Layout */
-    main { flex: 1; max-width: 1300px; width: 100%; margin: 0 auto; padding: 2rem; }
+    /* Layout Split Dashboard + Chat */
+    main { flex: 1; max-width: 1440px; width: 100%; margin: 0 auto; padding: 1.5rem 2rem; }
     .tab-content { display: none; }
     .tab-content.active { display: block; }
+
+    .dashboard-split { display: grid; grid-template-columns: 1fr 430px; gap: 1.5rem; align-items: start; }
+    @media (max-width: 1100px) {
+      .dashboard-split { grid-template-columns: 1fr; }
+    }
+    .sticky-chat { position: sticky; top: 4.8rem; height: calc(100vh - 6.5rem); display: flex; flex-direction: column; }
+    .sticky-chat .chat-container { flex: 1; height: 100%; }
 
     /* Cards */
     .card { background-color: var(--card-bg); border: 1px solid var(--card-border); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04); }
@@ -167,11 +174,6 @@
       </div>
     </div>
     <div class="header-actions">
-      <!-- Badge Neutre sans nom de modèle -->
-      <div class="badge-local">
-        <span class="badge-dot"></span>
-        Mode Local Hors-Ligne
-      </div>
       <div class="role-selector">
         <label for="roleSelect">Rôle :</label>
         <select id="roleSelect" onchange="changeRole()">
@@ -185,10 +187,7 @@
   <!-- Navigation -->
   <nav>
     <button class="nav-btn active" onclick="switchTab('dashboard')">
-      Candidats & Dashboard
-    </button>
-    <button class="nav-btn" onclick="switchTab('chat')">
-      Assistant Q&A
+      Candidats & Chat
     </button>
     <button class="nav-btn" onclick="switchTab('comparator')">
       Comparateur
@@ -196,69 +195,83 @@
     <button class="nav-btn" onclick="switchTab('audit')">
       Conformité & Registre
     </button>
+    <a href="/adminer" target="_blank" class="nav-btn" style="text-decoration: none; color: #52525b; margin-left: auto;">
+      Adminer BDD ↗
+    </a>
   </nav>
 
   <!-- Main Container -->
   <main>
 
-    <!-- TAB 1 : DASHBOARD -->
+    <!-- TAB 1 : DASHBOARD AVEC CANDIDATS À GAUCHE & CHATBOT À DROITE -->
     <section id="tab-dashboard" class="tab-content active">
-      <!-- Upload Zone -->
-      <div class="card">
-        <div class="upload-zone" id="dropZone" onclick="document.getElementById('cvFileInput').click()">
-          <div class="upload-icon">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-              <polyline points="17 8 12 3 7 8"></polyline>
-              <line x1="12" y1="3" x2="12" y2="15"></line>
-            </svg>
+      <div class="dashboard-split">
+        
+        <!-- Colonne Gauche : Upload & Liste des Candidats -->
+        <div class="dashboard-left">
+          <!-- Upload Zone -->
+          <div class="card">
+            <div class="upload-zone" id="dropZone" onclick="document.getElementById('cvFileInput').click()">
+              <div class="upload-icon">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="17 8 12 3 7 8"></polyline>
+                  <line x1="12" y1="3" x2="12" y2="15"></line>
+                </svg>
+              </div>
+              <div class="upload-title">Déposer un CV pour analyse locale</div>
+              <div class="upload-subtitle">Formats : PDF, Markdown (.md), Texte (.txt), Scan Image (.png, .jpg)</div>
+              <input type="file" id="cvFileInput" accept=".pdf,.md,.txt,.png,.jpg,.jpeg" onchange="handleFileSelected(event)">
+              <div class="upload-actions">
+                <button class="btn btn-primary" type="button" onclick="event.stopPropagation(); document.getElementById('cvFileInput').click()">
+                  Parcourir les fichiers
+                </button>
+                <button class="btn btn-secondary" type="button" onclick="event.stopPropagation(); importExampleCV()">
+                  Charger le CV d'exemple
+                </button>
+              </div>
+            </div>
+            <div id="uploadLoader" style="display: none; margin-top: 1rem; text-align: center; color: var(--lime-dark); font-size: 0.82rem; font-weight: 600;">
+              <span class="spinner" style="margin-right: 0.4rem; vertical-align: middle;"></span>
+              Extraction et minimisation en cours... Veuillez patienter.
+            </div>
           </div>
-          <div class="upload-title">Déposer un CV pour analyse locale</div>
-          <div class="upload-subtitle">Formats supportés : PDF, Markdown (.md), Texte (.txt), Scan Image (.png, .jpg)</div>
-          <input type="file" id="cvFileInput" accept=".pdf,.md,.txt,.png,.jpg,.jpeg" onchange="handleFileSelected(event)">
-          <div class="upload-actions">
-            <button class="btn btn-primary" type="button" onclick="event.stopPropagation(); document.getElementById('cvFileInput').click()">
-              Parcourir les fichiers
-            </button>
-            <button class="btn btn-secondary" type="button" onclick="event.stopPropagation(); importExampleCV()">
-              Charger le CV d'exemple
-            </button>
+
+          <!-- Candidates List -->
+          <div class="card">
+            <div class="card-title">
+              <span>Vivier de candidatures (<span id="candCount">0</span>)</span>
+              <button class="btn btn-secondary btn-sm" onclick="loadCandidates()">Actualiser</button>
+            </div>
+            <div class="candidates-grid" id="candidatesGrid">
+              <!-- Injecté dynamiquement -->
+            </div>
           </div>
         </div>
-        <div id="uploadLoader" style="display: none; margin-top: 1rem; text-align: center; color: var(--lime-dark); font-size: 0.82rem; font-weight: 600;">
-          <span class="spinner" style="margin-right: 0.4rem; vertical-align: middle;"></span>
-          Extraction et minimisation en cours... Veuillez patienter.
-        </div>
-      </div>
 
-      <!-- Candidates List -->
-      <div class="card">
-        <div class="card-title">
-          <span>Vivier de candidatures (<span id="candCount">0</span>)</span>
-          <button class="btn btn-secondary btn-sm" onclick="loadCandidates()">Actualiser</button>
+        <!-- Colonne Droite : Chatbot Fixé à droite -->
+        <div class="dashboard-right">
+          <div class="card sticky-chat" style="padding: 1rem;">
+            <div class="card-title" style="margin-bottom: 0.75rem;">
+              <span>Assistant Q&A Candidats</span>
+            </div>
+            <div class="chat-container">
+              <div class="chat-messages" id="chatMessages">
+                <div class="message assistant">Bonjour Sarah. Posez vos questions sur les profils au regard de la fiche de poste de Développeur Python. Je réponds de façon concise à partir des données nettoyées.</div>
+              </div>
+              <div class="chat-chips">
+                <button class="chip" onclick="askPreset('Qui a déjà travaillé avec des API REST ?')">API REST ?</button>
+                <button class="chip" onclick="askPreset('Qui maîtrise Django ou FastAPI en production ?')">Django / FastAPI ?</button>
+                <button class="chip" onclick="askPreset('Quels profils ont de l’expérience avec PostgreSQL et Docker ?')">PostgreSQL & Docker ?</button>
+              </div>
+              <div class="chat-input-area">
+                <input type="text" class="chat-input" id="chatInput" placeholder="Poser une question..." onkeydown="if(event.key === 'Enter') sendChatMessage()">
+                <button class="btn btn-primary" onclick="sendChatMessage()" id="sendChatBtn">Envoyer</button>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="candidates-grid" id="candidatesGrid">
-          <!-- Injecté dynamiquement -->
-        </div>
-      </div>
-    </section>
 
-    <!-- TAB 2 : CHATBOT -->
-    <section id="tab-chat" class="tab-content">
-      <div class="chat-container">
-        <div class="chat-messages" id="chatMessages">
-          <div class="message assistant">Bonjour Sarah. Je suis votre assistant RH local. Posez-moi vos questions sur le vivier de candidats au regard de la fiche de poste de Développeur Python. Je ne traite que les données techniques nettoyées.</div>
-        </div>
-        <div class="chat-chips">
-          <button class="chip" onclick="askPreset('Qui a déjà travaillé avec des API REST ?')">Qui a travaillé avec des API REST ?</button>
-          <button class="chip" onclick="askPreset('Qui maîtrise Django ou FastAPI en production ?')">Qui maîtrise Django ou FastAPI ?</button>
-          <button class="chip" onclick="askPreset('Quels profils ont de l’expérience avec PostgreSQL et Docker ?')">PostgreSQL & Docker ?</button>
-          <button class="chip" onclick="askPreset('Fais-moi un récapitulatif comparatif des profils disponibles')">Récapitulatif des profils</button>
-        </div>
-        <div class="chat-input-area">
-          <input type="text" class="chat-input" id="chatInput" placeholder="Poser une question concise sur les candidats..." onkeydown="if(event.key === 'Enter') sendChatMessage()">
-          <button class="btn btn-primary" onclick="sendChatMessage()" id="sendChatBtn">Envoyer</button>
-        </div>
       </div>
     </section>
 

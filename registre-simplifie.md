@@ -4,7 +4,7 @@
 limites comprises.
 
 **Application :** Atelier Nova - Assistant RH Local (Souverain & Air-Gapped)  
-**Équipe :** Anis & Co  
+**Équipe :** Jean Philippe, Hugo, Anis, Samy  
 **Palier atteint :** Palier 3 (Poussé - Vision, Échéances, Droit à l'oubli, Audit RGPD, Portabilité, RBAC)  
 
 | Rubrique | À renseigner | Votre réponse |

@@ -3,146 +3,149 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Atelier Nova — Assistant RH Local (Souverain & RGPD)</title>
+  <title>Atelier Nova — Assistant RH Local</title>
   <style>
     :root {
-      --bg: #0b0f19;
-      --card-bg: #111827;
-      --card-border: #1f2937;
-      --hover-bg: #1e293b;
-      --text: #f9fafb;
-      --text-muted: #9ca3af;
-      --primary: #4f46e5;
-      --primary-hover: #4338ca;
-      --primary-light: rgba(79, 70, 229, 0.15);
-      --accent: #06b6d4;
-      --success: #10b981;
-      --success-light: rgba(16, 185, 129, 0.15);
-      --warning: #f59e0b;
-      --warning-light: rgba(245, 158, 11, 0.15);
-      --danger: #ef4444;
-      --danger-light: rgba(239, 68, 68, 0.15);
-      --radius: 10px;
+      /* Palette Blanc Cassé & Minérale */
+      --bg: #f7f7f4;
+      --card-bg: #ffffff;
+      --card-border: #e5e5df;
+      --hover-bg: #eeeeea;
+      --text: #18181b;
+      --text-muted: #71717a;
+      
+      /* Lime Accents */
+      --lime: #84cc16;
+      --lime-hover: #65a30d;
+      --lime-dark: #152904;
+      --lime-light: rgba(132, 204, 22, 0.18);
+      
+      --accent: #2563eb;
+      --success: #15803d;
+      --success-light: #f0fdf4;
+      --warning: #b45309;
+      --warning-light: #fffbeb;
+      --danger: #b91c1c;
+      --danger-light: #fef2f2;
+      --radius: 8px;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
     body { background-color: var(--bg); color: var(--text); line-height: 1.5; min-height: 100vh; display: flex; flex-direction: column; }
     
     /* Header */
-    header { background-color: var(--card-bg); border-bottom: 1px solid var(--card-border); padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 50; }
+    header { background-color: var(--card-bg); border-bottom: 1px solid var(--card-border); padding: 0.9rem 2rem; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 50; }
     .brand { display: flex; align-items: center; gap: 0.75rem; }
-    .brand-logo { width: 36px; height: 36px; border-radius: 8px; background: linear-gradient(135deg, var(--primary), var(--accent)); display: flex; align-items: center; justify-content: center; font-weight: bold; color: white; }
-    .brand h1 { font-size: 1.15rem; font-weight: 700; letter-spacing: -0.02em; }
+    .brand-logo { width: 34px; height: 34px; border-radius: 6px; background-color: #18181b; display: flex; align-items: center; justify-content: center; color: #ffffff; }
+    .brand h1 { font-size: 1.05rem; font-weight: 700; letter-spacing: -0.01em; color: var(--text); }
     .brand p { font-size: 0.75rem; color: var(--text-muted); }
     
     .header-actions { display: flex; align-items: center; gap: 1rem; }
-    .badge-local { background: var(--success-light); color: var(--success); border: 1px solid rgba(16,185,129,0.3); padding: 0.35rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; display: flex; align-items: center; gap: 0.35rem; }
-    .badge-dot { width: 8px; height: 8px; border-radius: 50%; background-color: var(--success); animation: pulse 2s infinite; }
-    @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
+    .badge-local { background: var(--success-light); color: var(--success); border: 1px solid rgba(21,128,61,0.25); padding: 0.35rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; display: flex; align-items: center; gap: 0.4rem; }
+    .badge-dot { width: 7px; height: 7px; border-radius: 50%; background-color: var(--success); }
 
-    .role-selector { display: flex; align-items: center; gap: 0.5rem; background: var(--bg); border: 1px solid var(--card-border); border-radius: 8px; padding: 0.25rem 0.5rem; }
-    .role-selector label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600; }
-    .role-selector select { background: transparent; color: var(--text); border: none; font-size: 0.85rem; font-weight: 600; cursor: pointer; outline: none; }
+    .role-selector { display: flex; align-items: center; gap: 0.5rem; background: var(--bg); border: 1px solid var(--card-border); border-radius: 6px; padding: 0.25rem 0.5rem; }
+    .role-selector label { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600; }
+    .role-selector select { background: transparent; color: var(--text); border: none; font-size: 0.82rem; font-weight: 600; cursor: pointer; outline: none; }
     .role-selector select option { background: var(--card-bg); color: var(--text); }
 
     /* Navigation */
-    nav { background-color: rgba(17, 24, 39, 0.7); backdrop-filter: blur(8px); border-bottom: 1px solid var(--card-border); padding: 0 2rem; display: flex; gap: 2rem; }
-    .nav-btn { background: none; border: none; color: var(--text-muted); font-size: 0.9rem; font-weight: 600; padding: 0.85rem 0; cursor: pointer; position: relative; transition: color 0.2s; }
+    nav { background-color: var(--card-bg); border-bottom: 1px solid var(--card-border); padding: 0 2rem; display: flex; gap: 2rem; }
+    .nav-btn { background: none; border: none; color: var(--text-muted); font-size: 0.85rem; font-weight: 600; padding: 0.85rem 0; cursor: pointer; position: relative; transition: color 0.15s; display: flex; align-items: center; gap: 0.4rem; }
     .nav-btn:hover { color: var(--text); }
-    .nav-btn.active { color: var(--text); }
-    .nav-btn.active::after { content: ''; position: absolute; bottom: -1px; left: 0; right: 0; height: 2px; background: var(--primary); border-radius: 2px; }
+    .nav-btn.active { color: var(--text); font-weight: 700; }
+    .nav-btn.active::after { content: ''; position: absolute; bottom: -1px; left: 0; right: 0; height: 2px; background: var(--lime-hover); border-radius: 2px; }
 
     /* Layout */
-    main { flex: 1; max-width: 1400px; width: 100%; margin: 0 auto; padding: 2rem; }
+    main { flex: 1; max-width: 1300px; width: 100%; margin: 0 auto; padding: 2rem; }
     .tab-content { display: none; }
     .tab-content.active { display: block; }
 
-    /* Cards & Containers */
-    .card { background-color: var(--card-bg); border: 1px solid var(--card-border); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2); }
-    .card-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center; }
+    /* Cards */
+    .card { background-color: var(--card-bg); border: 1px solid var(--card-border); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04); }
+    .card-title { font-size: 1rem; font-weight: 700; margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center; color: var(--text); }
 
     /* Upload Box */
-    .upload-zone { border: 2px dashed var(--card-border); border-radius: var(--radius); padding: 2rem; text-align: center; background-color: rgba(15, 23, 42, 0.6); transition: all 0.2s; cursor: pointer; }
-    .upload-zone:hover { border-color: var(--primary); background-color: var(--primary-light); }
-    .upload-zone.dragover { border-color: var(--accent); background-color: rgba(6, 182, 212, 0.1); }
-    .upload-icon { font-size: 2.2rem; margin-bottom: 0.5rem; }
-    .upload-title { font-weight: 600; font-size: 1rem; margin-bottom: 0.25rem; }
-    .upload-subtitle { font-size: 0.8rem; color: var(--text-muted); }
-    .upload-actions { margin-top: 1rem; display: flex; justify-content: center; gap: 1rem; }
+    .upload-zone { border: 2px dashed #d4d4cb; border-radius: var(--radius); padding: 2.2rem; text-align: center; background-color: #fbfbf9; transition: all 0.15s; cursor: pointer; }
+    .upload-zone:hover { border-color: var(--lime-hover); background-color: var(--lime-light); }
+    .upload-icon { margin-bottom: 0.5rem; color: var(--text-muted); }
+    .upload-title { font-weight: 600; font-size: 0.95rem; margin-bottom: 0.25rem; color: var(--text); }
+    .upload-subtitle { font-size: 0.78rem; color: var(--text-muted); }
+    .upload-actions { margin-top: 1rem; display: flex; justify-content: center; gap: 0.75rem; }
     input[type="file"] { display: none; }
 
-    /* Buttons */
-    .btn { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.85rem; font-weight: 600; cursor: pointer; border: none; transition: all 0.15s; text-decoration: none; }
-    .btn-primary { background: var(--primary); color: white; }
-    .btn-primary:hover { background: var(--primary-hover); }
-    .btn-secondary { background: var(--hover-bg); color: var(--text); border: 1px solid var(--card-border); }
-    .btn-secondary:hover { background: rgba(255, 255, 255, 0.08); }
-    .btn-danger { background: var(--danger-light); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.3); }
+    /* Buttons (Lime & Neutres) */
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem; padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.82rem; font-weight: 600; cursor: pointer; border: none; transition: all 0.15s; text-decoration: none; }
+    .btn-primary { background: var(--lime); color: var(--lime-dark); border: 1px solid #74b816; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05); }
+    .btn-primary:hover { background: var(--lime-hover); color: #ffffff; }
+    .btn-secondary { background: #ffffff; color: var(--text); border: 1px solid var(--card-border); }
+    .btn-secondary:hover { background: var(--hover-bg); }
+    .btn-danger { background: var(--danger-light); color: var(--danger); border: 1px solid #fecaca; }
     .btn-danger:hover { background: var(--danger); color: white; }
-    .btn-sm { padding: 0.3rem 0.6rem; font-size: 0.75rem; }
+    .btn-sm { padding: 0.35rem 0.65rem; font-size: 0.75rem; }
 
     /* Candidates Grid */
     .candidates-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.25rem; margin-top: 1rem; }
-    .candidate-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: var(--radius); padding: 1.25rem; display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.15s, border-color 0.15s; }
-    .candidate-card:hover { transform: translateY(-2px); border-color: rgba(79, 70, 229, 0.5); }
-    .cand-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem; }
-    .cand-id { font-size: 0.75rem; font-weight: 700; color: var(--accent); background: rgba(6, 182, 212, 0.1); padding: 0.2rem 0.5rem; border-radius: 4px; }
-    .cand-name { font-size: 1.05rem; font-weight: 700; margin-top: 0.35rem; }
-    .cand-status { font-size: 0.7rem; font-weight: 600; padding: 0.2rem 0.5rem; border-radius: 9999px; }
-    .status-active { background: var(--success-light); color: var(--success); }
-    .status-expired { background: var(--danger-light); color: var(--danger); }
+    .candidate-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: var(--radius); padding: 1.25rem; display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.15s, border-color 0.15s, box-shadow 0.15s; }
+    .candidate-card:hover { border-color: #cbd5e1; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); }
+    .cand-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem; }
+    .cand-id { font-size: 0.72rem; font-weight: 700; color: #3f3f46; background: #f4f4f0; padding: 0.15rem 0.45rem; border-radius: 4px; border: 1px solid #e4e4df; }
+    .cand-name { font-size: 1rem; font-weight: 700; margin-top: 0.35rem; color: var(--text); }
+    .cand-status { font-size: 0.68rem; font-weight: 600; padding: 0.15rem 0.45rem; border-radius: 9999px; }
+    .status-active { background: var(--success-light); color: var(--success); border: 1px solid #bbf7d0; }
+    .status-expired { background: var(--danger-light); color: var(--danger); border: 1px solid #fecaca; }
     .cand-skills { display: flex; flex-wrap: wrap; gap: 0.35rem; margin: 0.75rem 0; }
-    .skill-tag { background: rgba(255, 255, 255, 0.06); font-size: 0.75rem; padding: 0.2rem 0.5rem; border-radius: 4px; color: var(--text-muted); }
-    .cand-preview { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 1rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .skill-tag { background: #f4f4f0; font-size: 0.72rem; padding: 0.15rem 0.45rem; border-radius: 4px; color: #52525b; border: 1px solid #e4e4df; }
+    .cand-preview { font-size: 0.78rem; color: var(--text-muted); margin-bottom: 1rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.4; }
 
     /* Focus Modal */
-    .modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(4px); z-index: 100; display: none; align-items: center; justify-content: center; padding: 1.5rem; }
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.45); backdrop-filter: blur(2px); z-index: 100; display: none; align-items: center; justify-content: center; padding: 1.5rem; }
     .modal-overlay.active { display: flex; }
-    .modal { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: var(--radius); width: 100%; max-width: 900px; max-height: 90vh; overflow-y: auto; display: flex; flex-direction: column; }
+    .modal { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: var(--radius); width: 100%; max-width: 860px; max-height: 88vh; overflow-y: auto; display: flex; flex-direction: column; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1); }
     .modal-header { padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--card-border); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; background: var(--card-bg); z-index: 10; }
-    .modal-body { padding: 1.5rem; display: flex; flex-direction: column; gap: 1.5rem; }
-    .modal-footer { padding: 1rem 1.5rem; border-top: 1px solid var(--card-border); display: flex; justify-content: space-between; align-items: center; position: sticky; bottom: 0; background: var(--card-bg); z-index: 10; }
-    .close-btn { background: none; border: none; color: var(--text-muted); font-size: 1.5rem; cursor: pointer; }
+    .modal-body { padding: 1.5rem; display: flex; flex-direction: column; gap: 1.25rem; }
+    .modal-footer { padding: 0.9rem 1.5rem; border-top: 1px solid var(--card-border); display: flex; justify-content: space-between; align-items: center; position: sticky; bottom: 0; background: var(--card-bg); z-index: 10; }
+    .close-btn { background: none; border: none; color: var(--text-muted); font-size: 1.4rem; cursor: pointer; }
     .close-btn:hover { color: var(--text); }
 
     /* Focus Sections */
-    .section-title { font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--accent); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.4rem; }
-    .contact-box { background: rgba(255, 255, 255, 0.03); border: 1px solid var(--card-border); border-radius: 8px; padding: 1rem; }
-    .facts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-    .fact-card { background: rgba(255, 255, 255, 0.02); border: 1px solid var(--card-border); border-radius: 8px; padding: 0.85rem; }
-    .fact-card h4 { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.4rem; }
+    .section-title { font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: #52525b; margin-bottom: 0.4rem; }
+    .contact-box { background: #fafaf8; border: 1px solid var(--card-border); border-radius: 6px; padding: 0.9rem; }
+    .facts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.9rem; }
+    .fact-card { background: #fafaf8; border: 1px solid var(--card-border); border-radius: 6px; padding: 0.85rem; }
+    .fact-card h4 { font-size: 0.8rem; color: #52525b; margin-bottom: 0.4rem; }
     
     .deductions-box { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; }
-    .deduction-col { background: rgba(255, 255, 255, 0.02); border: 1px solid var(--card-border); border-radius: 8px; padding: 0.85rem; }
+    .deduction-col { background: #fafaf8; border: 1px solid var(--card-border); border-radius: 6px; padding: 0.85rem; }
     .deduction-col.match { border-top: 3px solid var(--success); }
     .deduction-col.missing { border-top: 3px solid var(--warning); }
     .deduction-col.verify { border-top: 3px solid var(--accent); }
-    .deduction-col h4 { font-size: 0.8rem; font-weight: 700; margin-bottom: 0.5rem; }
-    .deduction-col ul { list-style: none; font-size: 0.8rem; color: var(--text-muted); display: flex; flex-direction: column; gap: 0.35rem; }
-    .deduction-col li::before { content: "• "; color: var(--text); }
+    .deduction-col h4 { font-size: 0.78rem; font-weight: 700; margin-bottom: 0.4rem; color: var(--text); }
+    .deduction-col ul { list-style: none; font-size: 0.78rem; color: #3f3f46; display: flex; flex-direction: column; gap: 0.35rem; }
+    .deduction-col li::before { content: "• "; color: var(--text-muted); }
 
     /* Chat View */
-    .chat-container { display: flex; flex-direction: column; height: 650px; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: var(--radius); overflow: hidden; }
-    .chat-messages { flex: 1; padding: 1.5rem; overflow-y: auto; display: flex; flex-direction: column; gap: 1rem; }
-    .message { max-width: 80%; padding: 0.85rem 1.15rem; border-radius: 12px; font-size: 0.9rem; line-height: 1.5; white-space: pre-wrap; }
-    .message.user { align-self: flex-end; background: var(--primary); color: white; border-bottom-right-radius: 2px; }
-    .message.assistant { align-self: flex-start; background: var(--hover-bg); border: 1px solid var(--card-border); border-bottom-left-radius: 2px; }
-    .chat-input-area { padding: 1rem 1.5rem; border-top: 1px solid var(--card-border); display: flex; gap: 0.75rem; background: rgba(15, 23, 42, 0.6); }
-    .chat-input { flex: 1; background: var(--bg); border: 1px solid var(--card-border); border-radius: 8px; padding: 0.75rem 1rem; color: var(--text); font-size: 0.9rem; outline: none; }
-    .chat-input:focus { border-color: var(--primary); }
+    .chat-container { display: flex; flex-direction: column; height: 600px; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: var(--radius); overflow: hidden; }
+    .chat-messages { flex: 1; padding: 1.5rem; overflow-y: auto; display: flex; flex-direction: column; gap: 1rem; background: #fafaf8; }
+    .message { max-width: 80%; padding: 0.75rem 1rem; border-radius: 8px; font-size: 0.88rem; line-height: 1.45; white-space: pre-wrap; }
+    .message.user { align-self: flex-end; background: #18181b; color: white; border-bottom-right-radius: 2px; }
+    .message.assistant { align-self: flex-start; background: #ffffff; border: 1px solid var(--card-border); color: var(--text); border-bottom-left-radius: 2px; box-shadow: 0 1px 2px rgba(0,0,0,0.03); }
+    .chat-input-area { padding: 1rem 1.5rem; border-top: 1px solid var(--card-border); display: flex; gap: 0.75rem; background: var(--card-bg); }
+    .chat-input { flex: 1; background: #ffffff; border: 1px solid #d4d4cb; border-radius: 6px; padding: 0.65rem 0.9rem; color: var(--text); font-size: 0.88rem; outline: none; }
+    .chat-input:focus { border-color: var(--lime-hover); }
     .chat-chips { display: flex; gap: 0.5rem; overflow-x: auto; padding: 0.5rem 1.5rem; border-top: 1px solid var(--card-border); background: var(--card-bg); }
-    .chip { font-size: 0.75rem; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--card-border); border-radius: 9999px; padding: 0.3rem 0.75rem; cursor: pointer; white-space: nowrap; color: var(--text-muted); }
-    .chip:hover { color: var(--text); border-color: var(--primary); }
+    .chip { font-size: 0.73rem; background: #f4f4f0; border: 1px solid var(--card-border); border-radius: 9999px; padding: 0.25rem 0.65rem; cursor: pointer; white-space: nowrap; color: #52525b; }
+    .chip:hover { color: var(--text); border-color: #cbd5e1; background: #ecece6; }
 
     /* Tables */
     .table-container { overflow-x: auto; }
-    table { width: 100%; border-collapse: collapse; font-size: 0.85rem; text-align: left; }
-    th { padding: 0.75rem 1rem; background: rgba(255, 255, 255, 0.03); border-bottom: 1px solid var(--card-border); color: var(--text-muted); font-weight: 600; }
-    td { padding: 0.75rem 1rem; border-bottom: 1px solid var(--card-border); }
-    tr:hover td { background: rgba(255, 255, 255, 0.02); }
+    table { width: 100%; border-collapse: collapse; font-size: 0.82rem; text-align: left; }
+    th { padding: 0.65rem 0.9rem; background: #fafaf8; border-bottom: 1px solid var(--card-border); color: #52525b; font-weight: 600; }
+    td { padding: 0.65rem 0.9rem; border-bottom: 1px solid var(--card-border); }
+    tr:hover td { background: #fafaf8; }
 
-    /* Loading overlay */
-    .spinner { display: inline-block; width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.3); border-radius: 50%; border-top-color: white; animation: spin 0.8s linear infinite; }
+    /* Spinner */
+    .spinner { display: inline-block; width: 14px; height: 14px; border: 2px solid rgba(0,0,0,0.15); border-radius: 50%; border-top-color: var(--lime-hover); animation: spin 0.8s linear infinite; }
     @keyframes spin { to { transform: rotate(360deg); } }
   </style>
 </head>
@@ -151,16 +154,23 @@
   <!-- Header -->
   <header>
     <div class="brand">
-      <div class="brand-logo">AN</div>
+      <div class="brand-logo">
+        <!-- Logo Neutre Minimaliste -->
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+          <line x1="9" y1="3" x2="9" y2="21"></line>
+        </svg>
+      </div>
       <div>
         <h1>Atelier Nova — Assistant RH</h1>
         <p>Poste : Développeur Python Confirmé (CDI Nantes)</p>
       </div>
     </div>
     <div class="header-actions">
+      <!-- Badge Neutre sans nom de modèle -->
       <div class="badge-local">
         <span class="badge-dot"></span>
-        100% Local (ministral-3:3b)
+        Mode Local Hors-Ligne
       </div>
       <div class="role-selector">
         <label for="roleSelect">Rôle :</label>
@@ -174,10 +184,18 @@
 
   <!-- Navigation -->
   <nav>
-    <button class="nav-btn active" onclick="switchTab('dashboard')">📋 Candidats & Dashboard</button>
-    <button class="nav-btn" onclick="switchTab('chat')">💬 Chatbot RH Local</button>
-    <button class="nav-btn" onclick="switchTab('comparator')">📊 Comparateur Explicable</button>
-    <button class="nav-btn" onclick="switchTab('audit')">⚖️ Conformité DPO & Logs</button>
+    <button class="nav-btn active" onclick="switchTab('dashboard')">
+      Candidats & Dashboard
+    </button>
+    <button class="nav-btn" onclick="switchTab('chat')">
+      Assistant Q&A
+    </button>
+    <button class="nav-btn" onclick="switchTab('comparator')">
+      Comparateur
+    </button>
+    <button class="nav-btn" onclick="switchTab('audit')">
+      Conformité & Registre
+    </button>
   </nav>
 
   <!-- Main Container -->
@@ -188,22 +206,28 @@
       <!-- Upload Zone -->
       <div class="card">
         <div class="upload-zone" id="dropZone" onclick="document.getElementById('cvFileInput').click()">
-          <div class="upload-icon">📁</div>
-          <div class="upload-title">Déposer un nouveau CV pour analyse locale</div>
-          <div class="upload-subtitle">Formats supportés : PDF, Markdown (.md), Texte (.txt), CV Scanné Image (.png, .jpg)</div>
+          <div class="upload-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="17 8 12 3 7 8"></polyline>
+              <line x1="12" y1="3" x2="12" y2="15"></line>
+            </svg>
+          </div>
+          <div class="upload-title">Déposer un CV pour analyse locale</div>
+          <div class="upload-subtitle">Formats supportés : PDF, Markdown (.md), Texte (.txt), Scan Image (.png, .jpg)</div>
           <input type="file" id="cvFileInput" accept=".pdf,.md,.txt,.png,.jpg,.jpeg" onchange="handleFileSelected(event)">
           <div class="upload-actions">
             <button class="btn btn-primary" type="button" onclick="event.stopPropagation(); document.getElementById('cvFileInput').click()">
               Parcourir les fichiers
             </button>
             <button class="btn btn-secondary" type="button" onclick="event.stopPropagation(); importExampleCV()">
-              ⚡ Charger le CV d'exemple
+              Charger le CV d'exemple
             </button>
           </div>
         </div>
-        <div id="uploadLoader" style="display: none; margin-top: 1rem; text-align: center; color: var(--accent); font-size: 0.85rem; font-weight: 600;">
-          <span class="spinner" style="margin-right: 0.5rem; vertical-align: middle;"></span>
-          Extraction et minimisation en cours sur Ollama (ministral-3:3b)... Veuillez patienter ~5s.
+        <div id="uploadLoader" style="display: none; margin-top: 1rem; text-align: center; color: var(--lime-dark); font-size: 0.82rem; font-weight: 600;">
+          <span class="spinner" style="margin-right: 0.4rem; vertical-align: middle;"></span>
+          Extraction et minimisation en cours... Veuillez patienter.
         </div>
       </div>
 
@@ -211,7 +235,7 @@
       <div class="card">
         <div class="card-title">
           <span>Vivier de candidatures (<span id="candCount">0</span>)</span>
-          <button class="btn btn-secondary btn-sm" onclick="loadCandidates()">🔄 Actualiser</button>
+          <button class="btn btn-secondary btn-sm" onclick="loadCandidates()">Actualiser</button>
         </div>
         <div class="candidates-grid" id="candidatesGrid">
           <!-- Injecté dynamiquement -->
@@ -223,16 +247,16 @@
     <section id="tab-chat" class="tab-content">
       <div class="chat-container">
         <div class="chat-messages" id="chatMessages">
-          <div class="message assistant">Bonjour Sarah ! Je suis votre assistant RH souverain. Posez-moi n'importe quelle question sur vos candidats et l'adéquation avec la fiche de poste de Développeur Python. Je ne traite que les données nettoyées et minimisées.</div>
+          <div class="message assistant">Bonjour Sarah. Je suis votre assistant RH local. Posez-moi vos questions sur le vivier de candidats au regard de la fiche de poste de Développeur Python. Je ne traite que les données techniques nettoyées.</div>
         </div>
         <div class="chat-chips">
-          <button class="chip" onclick="askPreset('Qui a déjà travaillé avec des API REST ?')">💡 Qui a travaillé avec des API REST ?</button>
-          <button class="chip" onclick="askPreset('Qui maîtrise Django ou FastAPI en production ?')">💡 Qui maîtrise Django ou FastAPI ?</button>
-          <button class="chip" onclick="askPreset('Quels profils ont de l’expérience avec PostgreSQL et Docker ?')">💡 PostgreSQL & Docker ?</button>
-          <button class="chip" onclick="askPreset('Fais-moi un récapitulatif comparatif des profils disponibles')">💡 Récapitulatif global</button>
+          <button class="chip" onclick="askPreset('Qui a déjà travaillé avec des API REST ?')">Qui a travaillé avec des API REST ?</button>
+          <button class="chip" onclick="askPreset('Qui maîtrise Django ou FastAPI en production ?')">Qui maîtrise Django ou FastAPI ?</button>
+          <button class="chip" onclick="askPreset('Quels profils ont de l’expérience avec PostgreSQL et Docker ?')">PostgreSQL & Docker ?</button>
+          <button class="chip" onclick="askPreset('Fais-moi un récapitulatif comparatif des profils disponibles')">Récapitulatif des profils</button>
         </div>
         <div class="chat-input-area">
-          <input type="text" class="chat-input" id="chatInput" placeholder="Posez une question sur les candidats..." onkeydown="if(event.key === 'Enter') sendChatMessage()">
+          <input type="text" class="chat-input" id="chatInput" placeholder="Poser une question concise sur les candidats..." onkeydown="if(event.key === 'Enter') sendChatMessage()">
           <button class="btn btn-primary" onclick="sendChatMessage()" id="sendChatBtn">Envoyer</button>
         </div>
       </div>
@@ -275,7 +299,7 @@
       <div class="card">
         <div class="card-title">
           <span>Journal d'audit horodaté (Traçabilité RGPD)</span>
-          <span style="font-size: 0.75rem; color: var(--success); font-weight: 600;">✓ Zéro contenu de CV loggé</span>
+          <span style="font-size: 0.72rem; color: var(--success); font-weight: 600;">✓ Zéro contenu de CV loggé</span>
         </div>
         <div class="table-container">
           <table>
@@ -304,7 +328,7 @@
       <div class="modal-header">
         <div>
           <span class="cand-id" id="modalCandId">CANDIDAT-01</span>
-          <h2 id="modalCandName" style="font-size: 1.25rem; font-weight: 700; margin-top: 0.25rem;">Nom Candidat</h2>
+          <h2 id="modalCandName" style="font-size: 1.15rem; font-weight: 700; margin-top: 0.25rem;">Nom Candidat</h2>
         </div>
         <button class="close-btn" onclick="closeFocusModal()">&times;</button>
       </div>
@@ -312,7 +336,7 @@
         
         <!-- Contact Section -->
         <div>
-          <div class="section-title">👤 Coordonnées de Contact (Strictement Séparées)</div>
+          <div class="section-title">Coordonnées de Contact (Séparées)</div>
           <div class="contact-box" id="modalContactBox">
             <!-- Injecté selon rôle -->
           </div>
@@ -320,7 +344,7 @@
 
         <!-- Synthèse IA Explicable (Palier 2) -->
         <div>
-          <div class="section-title">🤖 Synthèse d'Adéquation IA (Explicabilité / Aucun Score)</div>
+          <div class="section-title">Synthèse d'Adéquation (Explicable / Zéro Score)</div>
           <div class="deductions-box">
             <div class="deduction-col match">
               <h4 style="color: var(--success);">Ce qui correspond</h4>
@@ -339,37 +363,37 @@
 
         <!-- Questions d'entretien générées -->
         <div>
-          <div class="section-title">🎯 Questions d'Entretien Préparatoires</div>
+          <div class="section-title">Questions d'Entretien (Max 5)</div>
           <div class="contact-box" id="modalQuestionsBox">
-            <ul id="modalQuestionsList" style="list-style: decimal; padding-left: 1.25rem; font-size: 0.85rem; display: flex; flex-direction: column; gap: 0.4rem;"></ul>
+            <ul id="modalQuestionsList" style="list-style: decimal; padding-left: 1.25rem; font-size: 0.82rem; display: flex; flex-direction: column; gap: 0.35rem; color: #27272a;"></ul>
           </div>
         </div>
 
         <!-- Faits Extraits (Minimisation) -->
         <div>
-          <div class="section-title">📄 Faits Extraits Vérifiés (Données personnelles inutiles purgées)</div>
+          <div class="section-title">Faits Extraits du CV (Données inutiles purgées)</div>
           <div class="facts-grid">
             <div class="fact-card">
               <h4>Expériences professionnelles</h4>
-              <div id="modalExpList" style="font-size: 0.8rem; display: flex; flex-direction: column; gap: 0.5rem;"></div>
+              <div id="modalExpList" style="font-size: 0.78rem; display: flex; flex-direction: column; gap: 0.45rem;"></div>
             </div>
             <div class="fact-card">
               <h4>Compétences & Formation</h4>
-              <div id="modalSkillsFormation" style="font-size: 0.8rem; display: flex; flex-direction: column; gap: 0.5rem;"></div>
+              <div id="modalSkillsFormation" style="font-size: 0.78rem; display: flex; flex-direction: column; gap: 0.45rem;"></div>
             </div>
           </div>
         </div>
 
       </div>
       <div class="modal-footer">
-        <div style="display: flex; gap: 0.5rem;">
-          <button class="btn btn-secondary btn-sm" onclick="exportCandidateData()">📥 Exporter (JSON)</button>
-          <button class="btn btn-secondary btn-sm" onclick="showNoticeModal()">✉️ Mention d'info</button>
-          <button class="btn btn-secondary btn-sm" onclick="showPromptModal()">🔍 Contexte Prompt</button>
-          <button class="btn btn-secondary btn-sm" onclick="simulateExpiryAction()">⏳ Simuler Expiration</button>
+        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+          <button class="btn btn-secondary btn-sm" onclick="exportCandidateData()">Exporter JSON</button>
+          <button class="btn btn-secondary btn-sm" onclick="showNoticeModal()">Mention d'info</button>
+          <button class="btn btn-secondary btn-sm" onclick="showPromptModal()">Contexte Prompt</button>
+          <button class="btn btn-secondary btn-sm" onclick="simulateExpiryAction()">Simuler Échéance</button>
         </div>
         <button class="btn btn-danger btn-sm" id="btnDeleteCandidate" onclick="deleteCurrentCandidate()">
-          🗑️ Supprimer (Droit à l'oubli)
+          Supprimer la fiche
         </button>
       </div>
     </div>
@@ -412,7 +436,7 @@
       const grid = document.getElementById('candidatesGrid');
       grid.innerHTML = '';
       if (currentCandidates.length === 0) {
-        grid.innerHTML = '<div style="color: var(--text-muted); font-size: 0.9rem; grid-column: 1/-1;">Aucun candidat dans le vivier. Déposez un CV ci-dessus !</div>';
+        grid.innerHTML = '<div style="color: var(--text-muted); font-size: 0.85rem; grid-column: 1/-1;">Aucun candidat dans le vivier. Déposez un CV ci-dessus.</div>';
         return;
       }
 
@@ -422,7 +446,7 @@
 
         const isExpired = cand.is_expired;
         const statusClass = isExpired ? 'status-expired' : 'status-active';
-        const statusText = isExpired ? 'Expiré' : 'Actif (Vivier)';
+        const statusText = isExpired ? 'Expiré' : 'Actif';
 
         const name = (currentRole === 'manager') 
           ? cand.anonymous_id 
@@ -438,14 +462,14 @@
               <span class="cand-status ${statusClass}">${statusText}</span>
             </div>
             <div class="cand-name">${name}</div>
-            <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.5rem;">Fichier : ${cand.source_filename}</div>
+            <div style="font-size: 0.72rem; color: var(--text-muted); margin-bottom: 0.4rem;">Source : ${cand.source_filename}</div>
             <div class="cand-skills">
               ${skills.map(s => `<span class="skill-tag">${s}</span>`).join('')}
             </div>
             <div class="cand-preview">${matchPreview}</div>
           </div>
-          <button class="btn btn-secondary btn-sm" style="width: 100%; margin-top: 0.5rem;" onclick="openFocusModal('${cand.id}')">
-            🔍 Voir la fiche détaillée
+          <button class="btn btn-secondary btn-sm" style="width: 100%; margin-top: 0.4rem;" onclick="openFocusModal('${cand.id}')">
+            Consulter la fiche détaillée
           </button>
         `;
         grid.appendChild(card);
@@ -465,15 +489,15 @@
       // Contact Box
       const contactBox = document.getElementById('modalContactBox');
       if (currentRole === 'manager') {
-        contactBox.innerHTML = '<span style="color: var(--warning); font-size: 0.85rem;">🔒 Coordonnées masquées pour le rôle Manager (Décision produit #2 : Recrutement anti-biais).</span>';
+        contactBox.innerHTML = '<span style="color: var(--warning); font-size: 0.8rem;">Coordonnées masquées pour le rôle Manager (Décision produit #2 : Recrutement anti-biais).</span>';
       } else {
         contactBox.innerHTML = `
           <div style="display: flex; justify-content: space-between; align-items: center;">
-            <div id="contactDetails" style="font-size: 0.85rem; color: var(--text-muted);">
+            <div id="contactDetails" style="font-size: 0.8rem; color: var(--text-muted);">
               Coordonnées masquées par défaut (Minimisation).
             </div>
             <button class="btn btn-secondary btn-sm" onclick="revealContact('${focusedCandidate.id}')">
-              👁️ Révéler les coordonnées (Contact)
+              Révéler les coordonnées (Contact)
             </button>
           </div>
         `;
@@ -496,9 +520,9 @@
       // Faits Expériences
       const expList = document.getElementById('modalExpList');
       expList.innerHTML = (focusedCandidate.extracted_data?.experiences || []).map(exp => `
-        <div style="border-left: 2px solid var(--primary); padding-left: 0.5rem;">
+        <div style="border-left: 2px solid var(--lime); padding-left: 0.5rem;">
           <strong>${exp.poste}</strong> — ${exp.entreprise} (${exp.periode})
-          <div style="color: var(--text-muted); font-size: 0.75rem;">${(exp.missions || []).join(', ')}</div>
+          <div style="color: var(--text-muted); font-size: 0.72rem;">${(exp.missions || []).join(', ')}</div>
         </div>
       `).join('') || 'Aucune expérience mentionnée.';
 
@@ -587,14 +611,14 @@
       if (!focusedCandidate) return;
       const res = await fetch(`/api/v1/candidates/${focusedCandidate.id}/prompt-context`);
       const data = await res.json();
-      alert("--- PROMPT D'EXTRACTION ENVOYÉ À OLLAMA ---\n\n" + data.prompt_extraction);
+      alert("--- PROMPT D'EXTRACTION ENVOYÉ EN LOCAL ---\n\n" + data.prompt_extraction);
     }
 
     // Simuler expiration
     async function simulateExpiryAction() {
       if (!focusedCandidate) return;
       await fetch(`/api/v1/candidates/${focusedCandidate.id}/simulate-expiry`, { method: 'POST' });
-      alert("Date d'échéance simulée au passé ! Le candidat apparaît désormais comme expiré.");
+      alert("Date d'échéance simulée au passé. Le profil apparaît comme expiré.");
       openFocusModal(focusedCandidate.id);
       loadCandidates();
     }
@@ -667,7 +691,7 @@
         const data = await res.json();
         appendChatMessage('assistant', data.response);
       } catch (err) {
-        appendChatMessage('assistant', "Erreur lors de l'appel au modèle local Ollama.");
+        appendChatMessage('assistant', "Erreur lors de l'appel au modèle local.");
       } finally {
         btn.disabled = false;
       }
@@ -699,7 +723,7 @@
       tbody.innerHTML = '';
       data.candidates.forEach(cand => {
         const tr = document.createElement('tr');
-        let html = `<td><strong>${cand.nom}</strong><br><span style="font-size:0.75rem; color:var(--text-muted);">${cand.anonymous_id}</span></td>`;
+        let html = `<td><strong>${cand.nom}</strong><br><span style="font-size:0.72rem; color:var(--text-muted);">${cand.anonymous_id}</span></td>`;
         data.criteria.forEach(crit => {
           const val = cand.evaluations_criteres[crit.id] || "Non mentionné";
           const color = val.includes("Conforme") ? "var(--success)" : (val.includes("Partiel") ? "var(--warning)" : "var(--text-muted)");
@@ -717,11 +741,11 @@
       const decData = await decRes.json();
       const decGrid = document.getElementById('decisionsGrid');
       decGrid.innerHTML = Object.values(decData).map(d => `
-        <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--card-border); border-radius: 8px; padding: 1rem;">
-          <h4 style="font-size: 0.85rem; color: var(--accent); margin-bottom: 0.4rem;">${d.titre}</h4>
-          <div style="font-weight: 700; font-size: 0.9rem; margin-bottom: 0.4rem;">${d.choix}</div>
-          <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem;">${d.justification}</p>
-          <span style="font-size: 0.7rem; color: var(--success);">${d.principe_rgpd}</span>
+        <div style="background: #fafaf8; border: 1px solid var(--card-border); border-radius: 6px; padding: 0.9rem;">
+          <h4 style="font-size: 0.78rem; color: #52525b; margin-bottom: 0.35rem;">${d.titre}</h4>
+          <div style="font-weight: 700; font-size: 0.85rem; margin-bottom: 0.35rem;">${d.choix}</div>
+          <p style="font-size: 0.76rem; color: var(--text-muted); margin-bottom: 0.4rem;">${d.justification}</p>
+          <span style="font-size: 0.68rem; color: var(--success); font-weight: 600;">${d.principe_rgpd}</span>
         </div>
       `).join('');
 
@@ -731,11 +755,11 @@
       const logsBody = document.getElementById('auditLogsBody');
       logsBody.innerHTML = logsData.map(l => `
         <tr>
-          <td style="color: var(--text-muted);">${new Date(l.timestamp).toLocaleString()}</td>
+          <td style="color: var(--text-muted); font-size: 0.75rem;">${new Date(l.timestamp).toLocaleString()}</td>
           <td><span style="font-weight: 600;">${l.user_role}</span></td>
           <td><span class="cand-id">${l.action}</span></td>
           <td>${l.anonymous_id || l.candidate_id || '-'}</td>
-          <td style="font-size: 0.8rem;">${l.details}</td>
+          <td style="font-size: 0.75rem;">${l.details}</td>
         </tr>
       `).join('');
     }

@@ -218,3 +218,11 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Security & GDPR: Never commit CVs
+cv/
+*.pdf
+*.png
+*.jpg
+*.jpeg
+

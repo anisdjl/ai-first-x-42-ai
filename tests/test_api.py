@@ -8,9 +8,19 @@ import os
 async def test_health_check():
     transport = ASGITransport(app=app)
     async with AsyncClient(transport=transport, base_url="http://test") as ac:
-        response = await ac.get("/")
+        response = await ac.get("/api/health")
     assert response.status_code == 200
     assert response.json()["status"] == "online"
+
+@pytest.mark.asyncio
+async def test_ui_served():
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url="http://test") as ac:
+        response = await ac.get("/")
+    assert response.status_code == 200
+    assert "Atelier Nova" in response.text
+
+
 
 @pytest.mark.asyncio
 async def test_job_posting_endpoint():
